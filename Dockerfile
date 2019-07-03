@@ -3,5 +3,9 @@ RUN apk add --no-cache \
 		bash \
 		openssh-client \
 		libcurl \
-		curl
-RUN SHPT=/usr/local/bin/shipit && curl -o $SHPT https://raw.githubusercontent.com/sapegin/shipit/master/bin/shipit && chmod +x $SHPT && unset SHPT
+		curl \
+		ncurses
+RUN SHPT=/usr/local/bin/shipit && \
+	curl -o $SHPT https://raw.githubusercontent.com/sapegin/shipit/master/bin/shipit && \
+	chmod +x $SHPT && \
+	unset SHPT
