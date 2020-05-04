@@ -1,10 +1,12 @@
-image: docker:latest
+stages:
+  - build
 
-services:
-  - docker:dind
-
-.build: &build
-  stage: build
+.build:
+  image: docker:latest
+  services:
+    - docker:dind
+  tags:
+    - docker
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
@@ -13,14 +15,16 @@ services:
     - docker push "$CI_REGISTRY_IMAGE:$DOCKER_IMAGE_TAG"
 
 build-master:
-  <<: *build
+  extends: .build
+  stage: build
   variables:
     DOCKER_IMAGE_TAG: latest
   only:
     - master
 
 build-tags:
-  <<: *build
+  extends: .build
+  stage: build
   variables:
     DOCKER_IMAGE_TAG: $CI_COMMIT_REF_NAME
   only:
